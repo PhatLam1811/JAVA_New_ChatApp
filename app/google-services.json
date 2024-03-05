@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "709747481104",
+    "firebase_url": "https://java-new-chatapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "java-new-chatapp",
+    "storage_bucket": "java-new-chatapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709747481104:android:8c1166482cd199730b8895",
+        "android_client_info": {
+          "package_name": "com.example.java_new_chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtB45JTSdZbPyM1kJvkTaFykqsIFy9wPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
