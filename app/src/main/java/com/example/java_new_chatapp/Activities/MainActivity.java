@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialized view binding
-        this.m_binding = ActivityMainBinding.inflate(getLayoutInflater());
+        // init view binding
+        this.m_binding = ActivityMainBinding.inflate(this.getLayoutInflater());
         setContentView(this.m_binding.getRoot());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
