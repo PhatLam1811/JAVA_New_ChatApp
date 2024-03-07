@@ -2,7 +2,12 @@ package com.example.java_new_chatapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+// binding
 import com.example.java_new_chatapp.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+// firestore
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding m_binding;
@@ -15,6 +20,6 @@ public class MainActivity extends AppCompatActivity {
         this.m_binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(this.m_binding.getRoot());
 
-        this.m_binding.textLog.setText("No more hello world!");
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     }
 }
