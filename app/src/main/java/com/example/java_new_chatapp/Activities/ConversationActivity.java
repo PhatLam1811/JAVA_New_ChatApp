@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.java_new_chatapp.Controllers.ConversationController;
 import com.example.java_new_chatapp.Models.Message;
 import com.example.java_new_chatapp.Models.User;
-import com.example.java_new_chatapp.databinding.ActivityMessageBinding;
+import com.example.java_new_chatapp.databinding.ActivityConversationBinding;
 
 import java.util.ArrayList;
 
-public class MessageActivity extends AppCompatActivity {
+public class ConversationActivity extends AppCompatActivity {
     // bindings
-    private ActivityMessageBinding m_binding;
+    private ActivityConversationBinding m_binding;
 
     // controller
     private ConversationController m_controller;
@@ -30,7 +30,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // init view binding
-        this.m_binding =ActivityMessageBinding.inflate(this.getLayoutInflater());
+        this.m_binding =ActivityConversationBinding.inflate(this.getLayoutInflater());
         setContentView(this.m_binding.getRoot());
 
         // init controller
@@ -44,15 +44,5 @@ public class MessageActivity extends AppCompatActivity {
         // load all messages of the conversation
         // TO-DO: only load recent messages (10-15) instead of loading all
         this.m_messages = this.m_controller.getAllMessages();
-
-//        // generate first message
-//        Message firstMessage = Message.generateFakeMessage();
-//
-//        // upload first message
-//        FirebaseManager.getInstance().getFirestore()
-//                .collection("Messages")
-//                .add(firstMessage)
-//                .addOnSuccessListener(p -> Log.d("[DEBUG]", "upload message successful!"))
-//                .addOnFailureListener(p -> Log.d("[DEBUG]", "upload message failed!"));
     }
 }
