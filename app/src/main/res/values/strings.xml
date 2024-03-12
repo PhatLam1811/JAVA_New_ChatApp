@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">JAVA_New_ChatApp</string>
+
+    <!--conversation activity-->
+    <string name="hint_your_msg">Your Message</string>
+    <string name="btn_send_msg">Send</string>
 </resources>
