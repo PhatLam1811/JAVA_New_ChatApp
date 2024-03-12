@@ -2,9 +2,11 @@ package com.example.java_new_chatapp.Controllers;
 
 import android.util.Log;
 
+import com.example.java_new_chatapp.Models.Conversation;
 import com.example.java_new_chatapp.Models.Message;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +27,25 @@ public class ConversationController {
         this.m_firestore
                 .collection(_messageCollection)
                 .get()
-                .addOnSuccessListener(snapshots -> {
-                    List<DocumentSnapshot> documents = snapshots.getDocuments();
-                    for (DocumentSnapshot doc : documents) {
-                        Message msg = doc.toObject(Message.class);
-                      if (msg == null)
-                      {
-                          Log.d("[DEBUG]", "null msg???");
-                          continue;
-                      }
+                .addOnSuccessListener(this::OnSuccess)
+                .addOnFailureListener(error -> Log.d("[DEBUG]", Objects.requireNonNull(error.getMessage())));
 
+        return messages;
+    }
+
+    private void OnSuccess(QuerySnapshot querySnapshot) {
+        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (DocumentSnapshot doc : documents) {
+            Message msg = doc.toObject(Message.class);
+//            messages.add(msg);
+                        if (msg == null) {
+                            Log.d("[DEBUG]", "null msg???");
+                            continue;
+                        }
                         Log.d("[DEBUG]", "Sender: " + msg.getSender().getName());
                         Log.d("[DEBUG]", "Receiver: " + msg.getReceiver().getName());
                         Log.d("[DEBUG]", "Content: " + msg.getContent());
                         Log.d("[DEBUG]", "Date: " + msg.getDateTime());
-                    }
-                })
-                .addOnFailureListener(error -> Log.d("[DEBUG]", Objects.requireNonNull(error.getMessage())));
-
-        return messages;
+        }
     }
 }
