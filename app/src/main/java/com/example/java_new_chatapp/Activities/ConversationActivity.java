@@ -1,6 +1,7 @@
 package com.example.java_new_chatapp.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,9 +15,11 @@ import com.example.java_new_chatapp.Utils.AppDefines;
 import com.example.java_new_chatapp.databinding.ActivityConversationBinding;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -90,6 +93,7 @@ public class ConversationActivity extends AppCompatActivity {
         // init firestore
         this.m_firestoreDb = FirebaseFirestore.getInstance();
         this.m_conversationCollection = this.m_firestoreDb.collection("Messages");
+        this.m_conversationCollection.addSnapshotListener(this::onMessageDataUpdated);
 
         // load all messages
         this.m_conversationCollection
@@ -141,6 +145,20 @@ public class ConversationActivity extends AppCompatActivity {
         }
 
         this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
+    }
+
+    private void onMessageDataUpdated(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+        if (e != null)
+        {
+            return;
+        }
+
+        for (DocumentChange change : queryDocumentSnapshots.getDocumentChanges())
+        {
+            DocumentSnapshot docSnap = change.getDocument();
+            Message changeMesage = docSnap.toObject(Message.class);
+            Log.d(AppDefines.Log.TAG_DEBUG, "got new message: " + changeMesage.getContent());
+        }
     }
     //endregion
 
