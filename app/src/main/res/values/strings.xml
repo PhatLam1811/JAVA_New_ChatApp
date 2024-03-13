@@ -4,4 +4,9 @@
     <!--conversation activity-->
     <string name="hint_your_msg">Your Message</string>
     <string name="btn_send_msg">Send</string>
+
+    <!--message view holder-->
+    <string name="hint_sender_name">Sender</string>
+    <string name="hint_message_content">Message Content</string>
+    <string name="hint_message_date">Message Date</string>
 </resources>

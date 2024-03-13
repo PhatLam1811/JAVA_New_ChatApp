@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.java_new_chatapp.Adapters.MessageAdapter;
 import com.example.java_new_chatapp.Models.Message;
 import com.example.java_new_chatapp.Models.User;
 import com.example.java_new_chatapp.Utils.AppDefines;
@@ -22,12 +23,16 @@ import java.util.Calendar;
 public class ConversationActivity extends AppCompatActivity {
     // bindings
     protected ActivityConversationBinding m_binding;
+    protected MessageAdapter m_messageAdapter;
     protected Button m_btnSendMessage;
     protected EditText m_editTxtMessage;
 
     // participants
     protected ArrayList<User> m_participants;
     protected int m_appUserIndex;
+
+    // messages
+    protected  ArrayList<Message> m_messages;
 
     // firestore
     protected FirebaseFirestore m_firestoreDb;
@@ -69,6 +74,12 @@ public class ConversationActivity extends AppCompatActivity {
         this.m_participants.add(fakeAppUser);
         this.m_participants.add(fakePartner);
         this.m_appUserIndex = 0;
+
+        // init conversation messages
+        this.m_messages = new ArrayList<>();
+
+        // message adapter
+        this.m_messageAdapter = new MessageAdapter(this.m_messages);
 
         // init firestore
         this.m_firestoreDb = FirebaseFirestore.getInstance();
