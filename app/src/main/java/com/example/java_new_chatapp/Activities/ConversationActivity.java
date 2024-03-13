@@ -15,10 +15,13 @@ import com.example.java_new_chatapp.databinding.ActivityConversationBinding;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ConversationActivity extends AppCompatActivity {
     // bindings
@@ -80,10 +83,16 @@ public class ConversationActivity extends AppCompatActivity {
 
         // message adapter
         this.m_messageAdapter = new MessageAdapter(this.m_messages);
+        this.m_binding.recyclerViewMessages.setAdapter(this.m_messageAdapter);
 
         // init firestore
         this.m_firestoreDb = FirebaseFirestore.getInstance();
         this.m_conversationCollection = this.m_firestoreDb.collection("Messages");
+
+        // load all messages
+        this.m_conversationCollection
+                .get()
+                .addOnCompleteListener(this::onLoadAllMessagesCompleted);
     }
     // endregion
 
@@ -109,6 +118,24 @@ public class ConversationActivity extends AppCompatActivity {
 
     protected void onSendMessageCompleted(Task<DocumentReference> docRefTask) {
         android.util.Log.d(AppDefines.Log.TAG_DEBUG, "send new message completed!!");
+    }
+
+    protected void onLoadAllMessagesCompleted(Task<QuerySnapshot> querySnapshotTask) {
+        if (!querySnapshotTask.isSuccessful() || querySnapshotTask.isCanceled())
+        {
+            return;
+        }
+
+        QuerySnapshot querySnapshot = querySnapshotTask.getResult();
+        List<DocumentSnapshot> docSnaps = querySnapshot.getDocuments();
+
+        for (DocumentSnapshot doc : docSnaps)
+        {
+            Message message =doc.toObject(Message.class);
+            this.m_messages.add(message);
+        }
+
+        this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
     }
     //endregion
 }
