@@ -21,6 +21,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ConversationActivity extends AppCompatActivity {
@@ -42,11 +44,11 @@ public class ConversationActivity extends AppCompatActivity {
     protected CollectionReference m_conversationCollection;
 
     // region getters && setters
-    protected User getAppUser() {
+    public User getAppUser() {
         return this.m_participants.get(this.m_appUserIndex);
     }
 
-    protected User getPartner() {
+    public User getPartner() {
         int partnerIndex = (this.m_appUserIndex + 1) % this.m_participants.size();
         return this.m_participants.get(partnerIndex);
     }
@@ -135,12 +137,17 @@ public class ConversationActivity extends AppCompatActivity {
         for (DocumentSnapshot doc : docSnaps)
         {
             Message message =doc.toObject(Message.class);
-            this.m_messages.add(message);
+            this.addMessages(message);
         }
 
         this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
     }
     //endregion
+
+    public void addMessages(Message message) {
+        this.m_messages.add(message);
+        this.m_messages.sort(Comparator.comparing(Message::getDateTime));
+    }
 
     protected void updateLocalMessagesList(Message newMessage) {
         if (newMessage == null)
@@ -148,7 +155,7 @@ public class ConversationActivity extends AppCompatActivity {
             return;
         }
 
-        this.m_messages.add(newMessage);
+        this.addMessages(newMessage);
 
         this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
     }
