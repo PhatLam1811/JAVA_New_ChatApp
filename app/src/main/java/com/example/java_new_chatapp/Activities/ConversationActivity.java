@@ -96,7 +96,7 @@ public class ConversationActivity extends AppCompatActivity {
                 .addOnCompleteListener(this::onSendMessageCompleted);
     }
 
-    protected void onSendMessageCompleted(Task<DocumentReference> documentReferenceTask) {
+    protected void onSendMessageCompleted(Task<DocumentReference> docRefTask) {
         android.util.Log.d(AppDefines.Log.TAG_DEBUG, "send new message completed!!");
     }
     //endregion
