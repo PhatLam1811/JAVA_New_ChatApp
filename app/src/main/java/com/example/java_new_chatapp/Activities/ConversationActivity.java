@@ -114,6 +114,9 @@ public class ConversationActivity extends AppCompatActivity {
         this.m_conversationCollection
                 .add(newMessage)
                 .addOnCompleteListener(this::onSendMessageCompleted);
+
+        // update local messages UI
+        this.updateLocalMessagesList(newMessage);
     }
 
     protected void onSendMessageCompleted(Task<DocumentReference> docRefTask) {
@@ -138,4 +141,15 @@ public class ConversationActivity extends AppCompatActivity {
         this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
     }
     //endregion
+
+    protected void updateLocalMessagesList(Message newMessage) {
+        if (newMessage == null)
+        {
+            return;
+        }
+
+        this.m_messages.add(newMessage);
+
+        this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
+    }
 }
