@@ -1,7 +1,6 @@
 package com.example.java_new_chatapp.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -94,11 +92,6 @@ public class ConversationActivity extends AppCompatActivity {
         this.m_firestoreDb = FirebaseFirestore.getInstance();
         this.m_conversationCollection = this.m_firestoreDb.collection("Messages");
         this.m_conversationCollection.addSnapshotListener(this::onMessageDataUpdated);
-
-        // load all messages
-        this.m_conversationCollection
-                .get()
-                .addOnCompleteListener(this::onLoadAllMessagesCompleted);
     }
     // endregion
 
@@ -129,35 +122,25 @@ public class ConversationActivity extends AppCompatActivity {
         android.util.Log.d(AppDefines.Log.TAG_DEBUG, "send new message completed!!");
     }
 
-    protected void onLoadAllMessagesCompleted(Task<QuerySnapshot> querySnapshotTask) {
-        if (!querySnapshotTask.isSuccessful() || querySnapshotTask.isCanceled())
-        {
-            return;
-        }
-
-        QuerySnapshot querySnapshot = querySnapshotTask.getResult();
-        List<DocumentSnapshot> docSnaps = querySnapshot.getDocuments();
-
-        for (DocumentSnapshot doc : docSnaps)
-        {
-            Message message =doc.toObject(Message.class);
-            this.addMessages(message);
-        }
-
-        this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
-    }
-
     private void onMessageDataUpdated(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
         if (e != null)
         {
             return;
         }
 
+        boolean isDataChanged = false;
+
         for (DocumentChange change : queryDocumentSnapshots.getDocumentChanges())
         {
             DocumentSnapshot docSnap = change.getDocument();
-            Message changeMesage = docSnap.toObject(Message.class);
-            Log.d(AppDefines.Log.TAG_DEBUG, "got new message: " + changeMesage.getContent());
+            Message changeMessage = docSnap.toObject(Message.class);
+            this.addMessages(changeMessage);
+            isDataChanged = true;
+        }
+
+        if (isDataChanged)
+        {
+            this.m_messageAdapter.notifyItemRangeChanged(0, this.m_messages.size());
         }
     }
     //endregion
