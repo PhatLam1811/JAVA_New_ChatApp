@@ -1,7 +1,6 @@
 package com.example.java_new_chatapp.Activities;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
