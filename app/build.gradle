@@ -57,6 +57,9 @@ android {
         buildFeatures {
             buildConfig = true
         }
+        dataBinding {
+            enabled = true
+        }
     }
 }
 
